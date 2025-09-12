@@ -1,0 +1,70 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.12' //3.3.12
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.asciidoctor.jvm.pdf' version '3.3.2'
+}
+
+group = 'com.tenco'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	asciidoctorExt
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	asciidoctorExt 'org.asciidoctor:asciidoctorj-pdf:1.5.0'
+
+	// Spring Boot 애플리케이션에 보안 기능을 추가
+//	implementation "org.springframework.boot:spring-boot-starter-security:3.4.5"
+
+	// Swagger (SpringDoc OpenAPI 3) 추가
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+	// https://mvnrepository.com/artifact/com.auth0/java-jwt
+	implementation group: 'com.auth0', name: 'java-jwt', version: '4.4.0'
+
+	// 유효성 검사 추가
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// JPA 의존성 설정 (ORM -- 자바진형 --> JPA(스펙 : 인터페이스) --> 하이버네이트)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.register('pdfDocs', org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask) {
+	configurations 'asciidoctorExt'
+	sources {
+		include 'api-docs.adoc'
+	}
+	outputDir = file("${buildDir}/pdf")
+}
