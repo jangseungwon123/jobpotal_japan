@@ -15,15 +15,16 @@ logging:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.0.76:3306/mini_project_v2?useSSl=false&serverTimezone=Asia/Seoul
-    username: v2User
-    password: ghkdlxld123
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
 
   # H2 데이터베이스 웹 콘솔 활성화 (개발용)
   h2:
     console:
       enabled: true
+      path: /h2-console
 
 #  sql:
 #    init:
