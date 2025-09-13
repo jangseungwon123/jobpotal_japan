@@ -3,6 +3,8 @@ package com.tenco.jobpotal.alarm;
 import com.tenco.jobpotal._core.common.ApiUtil;
 import com.tenco.jobpotal._core.utils.Define;
 import com.tenco.jobpotal.user.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/alarms")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Alarm", description = "通知API")
 public class AlarmRestController {
 
     private final AlarmService alarmService;
@@ -21,6 +24,7 @@ public class AlarmRestController {
     /**
      * 사용자별 알람 목록 조회
      */
+    @Operation(summary = "ユーザー別通知一覧")
     @GetMapping("/user")
     public ResponseEntity<?> getAlarmsByUserId(
             @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
@@ -40,6 +44,7 @@ public class AlarmRestController {
     /**
      * 알람 읽음 처리
      */
+    @Operation(summary = "通知既読化")
     @PutMapping("/read")
     public ResponseEntity<?> updateReadStatus(
             @RequestBody AlarmRequest.UpdateReadStatusDTO dto,
@@ -52,6 +57,7 @@ public class AlarmRestController {
     /**
      * 읽지 않은 알람 개수 조회
      */
+    @Operation(summary = "未読通知数取得")
     @GetMapping("/unread-count")
     public ResponseEntity<?> getUnreadCount(
             @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {

@@ -6,6 +6,8 @@ import com.tenco.jobpotal._core.utils.Define;
 import com.tenco.jobpotal.user.LoginUser;
 import com.tenco.jobpotal.user.comp.CompUser;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Tag(name = "CompCommunity", description = "企業コミュニティAPI")
 public class CompCommunityRestController {
 
     private static final Logger log = LoggerFactory.getLogger(CompCommunityRestController.class);
     private final CompCommunityService compCommunityService;
 
     // 전체 게시글 조회 (페이징)
+    @Operation(summary = "ページング機能")
     @GetMapping("/comp-community/list")
     public ResponseEntity<?> compCommunityList(
             @RequestParam(defaultValue = "0") int page,
@@ -36,7 +40,7 @@ public class CompCommunityRestController {
         return ResponseEntity.ok(new ApiUtil<>(communityPage));
     }
 
-    // 단일 게시글 조회
+    @Operation(summary = "企業コミュニティ投稿取得")
     @GetMapping("/comp-community/{id}")
     public ResponseEntity<?> getCompCommunity(@PathVariable(name = "id") Long id,
                                           @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
@@ -53,6 +57,7 @@ public class CompCommunityRestController {
     }
 
     // 게시글 생성
+    @Operation(summary = "企業コミュニティ投稿作成")
     @PostMapping("/comp-community")
     public ResponseEntity<?> createCompCommunity(
             @RequestBody CompCommunityRequest.SaveDTO saveDTO,
@@ -67,6 +72,7 @@ public class CompCommunityRestController {
     }
 
     // 게시글 수정
+    @Operation(summary = "企業コミュニティ投稿修正")
     @PutMapping("/comp-community/{id}/update")
     public ResponseEntity<?> compCommunityUpdate(@PathVariable(name = "id") Long postId,
                                              @RequestBody CompCommunityRequest.UpdateDTO updateDTO,
@@ -81,6 +87,7 @@ public class CompCommunityRestController {
     }
 
     // 게시글 삭제
+    @Operation(summary = "企業コミュニティ投稿削除")
     @DeleteMapping("/comp-community/{id}/delete")
     public ResponseEntity<?> deleteCompCommunity(@PathVariable(name = "id") Long postId,
                                              @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {

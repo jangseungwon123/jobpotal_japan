@@ -6,6 +6,8 @@ import com.tenco.jobpotal._core.utils.Define;
 import com.tenco.jobpotal.user.LoginUser;
 import com.tenco.jobpotal.user.normal.User;
 import com.tenco.jobpotal.user.normal.UserResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Tag(name = "UserCommunity", description = "ユーザーコミュニティAPI")
 public class UserCommunityRestController {
 
     private static final Logger log = LoggerFactory.getLogger(UserCommunityRestController.class);
     private final UserCommunityService userCommunityService;
 
     // 전체 게시글 조회 (페이징)
+    @Operation(summary = "ページング機能")
     @GetMapping("/community/list")
     public ResponseEntity<?> communityList(
             @RequestParam(defaultValue = "0") int page,
@@ -37,6 +41,7 @@ public class UserCommunityRestController {
     }
 
     // 단일 게시글 조회
+    @Operation(summary = "ユーザーコミュニティ投稿取得")
     @GetMapping("/community/{id}")
     public ResponseEntity<?> getCommunity(@PathVariable(name = "id") Long id,
                                           @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
@@ -53,6 +58,7 @@ public class UserCommunityRestController {
     }
 
     // 게시글 생성
+    @Operation(summary = "ユーザーコミュニティ投稿作成")
     @PostMapping("/community")
     public ResponseEntity<?> createCommunity(
             @RequestBody UserCommunityRequest.SaveDTO saveDTO,
@@ -70,6 +76,7 @@ public class UserCommunityRestController {
     }
 
     // 게시글 수정
+    @Operation(summary = "ユーザーコミュニティ投稿修正")
     @PutMapping("/community/{id}/update")
     public ResponseEntity<?> CommunityUpdate(@PathVariable(name = "id") Long postId,
                                              @RequestBody UserCommunityRequest.UserCommunityUpdateDTO userCommunityUpdateDTO,
@@ -85,6 +92,7 @@ public class UserCommunityRestController {
 
 
     // 게시글 삭제
+    @Operation(summary = "ユーザーコミュニティ投稿削除")
     @DeleteMapping("/community/{id}/delete")
     public ResponseEntity<?> deleteCommunity(@PathVariable(name = "id") Long postId,
                                              @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {

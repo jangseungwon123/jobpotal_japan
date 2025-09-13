@@ -7,6 +7,8 @@ import com.tenco.jobpotal.user.*;
 import com.tenco.jobpotal.user.comp.CompUser;
 import com.tenco.jobpotal.user.comp.CompUserService;
 import com.tenco.jobpotal.user.normal.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Tag(name = "CompInfo", description = "企業API")
 public class CompInfoRestController {
 
 
@@ -29,6 +32,7 @@ public class CompInfoRestController {
     
 
     //전체 게시글 조회 and 제목 검색한 게시글 조회
+    @Operation(summary = "投稿一覧")
     @GetMapping("/company/list")
     public ResponseEntity<?> companyInfoList(
                                   @RequestParam(required = false) String type, // todo 검색 시 회사 종류도 선택해서 처리 추가할지 고민필요
@@ -50,6 +54,7 @@ public class CompInfoRestController {
     }
 
     // 기업정보 상세
+    @Operation(summary = "企業情報詳細")
     @GetMapping("/company/{id}")
     public ResponseEntity<?> companyInfoDetail(@PathVariable(name = "id") Long id,
                                                @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
@@ -61,6 +66,7 @@ public class CompInfoRestController {
     }
 
     // 기업정보 등록
+    @Operation(summary = "企業情報登録")
     @PostMapping("/company/form")
     public ResponseEntity<?> companyInfoInsert(@Valid @RequestBody CompInfoRequest.SaveDTO saveDTO,
                                                Errors errors,
@@ -82,6 +88,7 @@ public class CompInfoRestController {
     }
 
     // 기업정보 수정
+    @Operation(summary = "企業情報修正")
     @PutMapping("/company/{id}/update")
     public ResponseEntity<?> companyInfoUpdate(@PathVariable(name = "id") Long id, @Valid @RequestBody CompInfoRequest.UpdateDTO updateDTO,
                                                Errors errors,
@@ -98,6 +105,7 @@ public class CompInfoRestController {
         return ResponseEntity.ok(new ApiUtil<>("기업정보 수정이 완료 되었습니다."));
     }
 
+    @Operation(summary = "企業情報削除")
     @DeleteMapping("/company/{id}/delete")
     public ResponseEntity<?> companyInfoDelete(@PathVariable(name = "id") Long id, @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
 

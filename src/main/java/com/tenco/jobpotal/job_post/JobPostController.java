@@ -4,6 +4,8 @@ import com.tenco.jobpotal._core.common.ApiUtil;
 import com.tenco.jobpotal._core.errors.exception.Exception403;
 import com.tenco.jobpotal._core.utils.Define;
 import com.tenco.jobpotal.user.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/jobposts")
+@Tag(name = "JobPost", description = "企業求人公告API")
 public class JobPostController {
 
     private final JobPostService jobPostService;
@@ -28,6 +31,7 @@ public class JobPostController {
     }
 
     // 전체 목록 조회
+    @Operation(summary = "求人公告一覧")
     @GetMapping
     public ResponseEntity<List<JobPostResponseDTO>> getAllJobPosts() {
         List<JobPostResponseDTO> jobPosts = jobPostService.getAllJobPosts();
@@ -35,6 +39,7 @@ public class JobPostController {
     }
 
     // 상세 보기 조회
+    @Operation(summary = "求人公告詳細表示")
     @GetMapping("/{recruitId}")
     public ResponseEntity<JobPostResponseDTO> getJobPostById(@PathVariable Long recruitId) {
         JobPost jobPost = jobPostService.getJobPostById(recruitId); // 이 메서드는 예외 던지므로 Optional 아님
@@ -43,6 +48,7 @@ public class JobPostController {
 
 
     // 게시글 등록
+    @Operation(summary = "求人公告登録")
     @PostMapping("/save")
     public ResponseEntity<JobPostResponseDTO> createJobPost(@RequestBody @Valid JobPostRequestDTO requestDTO,
                                                             @RequestAttribute(value = Define.LOGIN_USER) LoginUser loginUser) {
@@ -55,6 +61,7 @@ public class JobPostController {
     }
 
     // 게시글 수정
+    @Operation(summary = "求人公告修正")
     @PutMapping("/update/{recruitId}")
         public ResponseEntity<JobPostResponseDTO> updateJobPost(@PathVariable Long recruitId,
                                                                 @RequestBody @Valid JobPostRequestDTO requestDTO,
@@ -65,6 +72,7 @@ public class JobPostController {
 
 
     // 게시글 삭제
+    @Operation(summary = "求人公告削除")
     @DeleteMapping("/delete/{recruitId}")
     public ResponseEntity<?> deleteJobPost(@PathVariable Long recruitId,
                                               @RequestAttribute(value = Define.LOGIN_USER) LoginUser loginUser) {
@@ -76,7 +84,9 @@ public class JobPostController {
 
 
     // 페이징 처리
+
     @GetMapping("/paged")
+    @Operation(summary = "ページング機能")
     public ResponseEntity<Page<JobPostResponseDTO>> getPagedJobPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -90,6 +100,7 @@ public class JobPostController {
     }
 
     // 검색 기능
+    @Operation(summary = "検索")
     @GetMapping("/search")
     public ResponseEntity<List<JobPostResponseDTO>> searchJobPosts(@RequestParam String keyword) {
         List<JobPostResponseDTO> result = jobPostService.searchJobPosts(keyword);

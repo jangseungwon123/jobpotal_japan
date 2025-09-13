@@ -3,6 +3,8 @@ package com.tenco.jobpotal.faq;
 import com.tenco.jobpotal._core.common.ApiUtil;
 import com.tenco.jobpotal._core.utils.Define;
 import com.tenco.jobpotal.user.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/faq")
 @RequiredArgsConstructor
+@Tag(name = "FAQ", description = "FAQ API")
 public class FAQRestController {
 
     private final FAQService faqService;
 
     // 전체 목록
+    @Operation(summary = "FAQ一覧")
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<FAQResponseDTO> faqs = faqService.getAllFAQs();
@@ -25,6 +29,7 @@ public class FAQRestController {
     }
 
     // 상세 조회
+    @Operation(summary = "FAQ詳細表示")
     @GetMapping("/{id}")
     public ResponseEntity<?> getDetail(@PathVariable Long id) {
         FAQResponseDTO faq = faqService.getFAQ(id);
@@ -32,6 +37,7 @@ public class FAQRestController {
     }
 
     // 등록 (관리자만)
+    @Operation(summary = "FAQ登録（管理者)")
     @PostMapping("/save")
     public ResponseEntity<?> create(@RequestBody FAQRequestDTO dto, @RequestAttribute(Define.LOGIN_USER) LoginUser loginUser) {
         // 서비스 레이어에서 권한 확인 및 생성
@@ -40,6 +46,7 @@ public class FAQRestController {
     }
 
     // 수정 (관리자만)
+    @Operation(summary = "FAQ修正（管理者）")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody FAQRequestDTO dto, @RequestAttribute(Define.LOGIN_USER) LoginUser loginUser) {
         FAQResponseDTO responseDTO = faqService.updateFAQ(id, dto, loginUser);
@@ -47,6 +54,7 @@ public class FAQRestController {
     }
 
     // 삭제 (관리자만)
+    @Operation(summary = "FAQ削除（管理者）")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, @RequestAttribute(Define.LOGIN_USER) LoginUser loginUser) {
         faqService.deleteFAQ(id, loginUser);

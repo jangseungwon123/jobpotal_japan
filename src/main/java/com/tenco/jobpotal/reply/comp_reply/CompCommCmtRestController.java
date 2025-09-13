@@ -16,11 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Tag(name = "CompCommCmt", description = "企業コミュニティコメントAPI")
 public class CompCommCmtRestController {
 
     private final CompCommCmtService compCommCmtService;
 
-    @Operation(summary = "기업 커뮤니티 댓글 목록조회")
+    @Operation(summary = "企業コミュニティコメント一覧取得")
     @GetMapping("/compcommcmts/list")
     public ResponseEntity<ApiUtil<List<CompCommCmtResponse.CompCommCmtListDTO>>> compCommCmtList(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -30,7 +31,7 @@ public class CompCommCmtRestController {
         return ResponseEntity.ok(new ApiUtil<>(commCmtList));
     } //
 
-    @Operation(summary = "기업 커뮤니티 댓글 상세조회")
+    @Operation(summary = "企業コミュニティコメント一覧取得")
     @GetMapping("/compcommcmts/{id}/detail")
     public ResponseEntity<ApiUtil<CompCommCmtResponse.DetailDTO>> detail(
             @PathVariable(name = "id") Long id, @RequestAttribute(value = Define.LOGIN_USER, required = false) LoginUser loginUser) {
@@ -38,7 +39,7 @@ public class CompCommCmtRestController {
         return ResponseEntity.ok(new ApiUtil<>(detailDTO));
     }
 
-    @Operation(summary = "기업 커뮤니티 댓글 저장 기능")
+    @Operation(summary = "企業コミュニティコメント登録")
     @PostMapping("/compcommcmts")
     public ResponseEntity<?> save(@Valid @RequestBody CompCommCmtRequest.SaveDTO saveDTO,
                                   @RequestAttribute(Define.LOGIN_USER) LoginUser loginUser) {
@@ -48,7 +49,7 @@ public class CompCommCmtRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiUtil<>(saveCompCommCmt));
     }
 
-    @Operation(summary = "기업 커뮤니티 댓글 수정")
+    @Operation(summary = "企業コミュニティコメント修正")
     @PutMapping("/compcommcmts/{id}")
     public ResponseEntity<?> update(@Valid @PathVariable(name = "id") Long id,
                                     @RequestBody CompCommCmtRequest.UpdateDTO updateDTO,
@@ -57,7 +58,7 @@ public class CompCommCmtRestController {
         return ResponseEntity.ok(new ApiUtil<>(updateCompCommCmt));
     }
 
-    @Operation(summary = "기업 커뮤니티 댓글 삭제")
+    @Operation(summary = "業コミュニティコメント削除")
     @PostMapping("/compcommcmts/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long compCommCmtId,
                                     @RequestParam(name = "postId") Long postId,
