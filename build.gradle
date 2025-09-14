@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'me.paulschwarz:spring-dotenv:3.0.0'
 	asciidoctorExt 'org.asciidoctor:asciidoctorj-pdf:1.5.0'
 
 	// Spring Boot 애플리케이션에 보안 기능을 추가
